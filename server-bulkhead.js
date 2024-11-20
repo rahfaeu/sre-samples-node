@@ -5,7 +5,7 @@ const app = express();
 const port = 8080;
 
 // Configurando bulkhead com cockatiel (Máximo de 2 requisições simultâneas) e definindo uma política de retry
-const bulkheadPolicy = bulkhead(2);
+const bulkheadPolicy = bulkhead(5);  // Permitir até 5 requisições simultâneas
 const retryPolicy = retry({ maxAttempts: 3, delay: 1000 }); // Tentativas até 3 vezes com delay de 1 segundo
 
 // Função simulando chamada externa
