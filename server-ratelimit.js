@@ -4,10 +4,13 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const port = 8080;
 
+const max_r = 100;
+
+
 // Middleware de rate limiting (Limite de 5 requisições por minuto)
 const limiter = rateLimit({
     windowMs: 60 * 1000,  // 1 minuto
-    max: 5,  // Limite de 5 requisições
+    max: max_r,  // Limite de 5 requisições
     message: 'Você excedeu o limite de requisições, tente novamente mais tarde.',
 });
 
