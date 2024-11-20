@@ -1,3 +1,9 @@
+# MBA Engenharia de Dados - Mackenzie
+
+**Aluno**: Rafael dos Santos
+
+**Metéria**: Cloud Computing e SRE - Uma Visão Prática [Turma 202412093.000.01A] - 2024/2
+
 # Exemplos Práticos de Resiliência em Aplicações Node.js
 Este material contempla exemplos práticos de uso de técnicas essenciais em aplicações, afim de garantir a confiabilidade, resiliência, escalabilidade e alta disponibilidade.
 
