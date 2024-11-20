@@ -272,9 +272,13 @@ Aumentar quantidade de chamadas simultâneas e avaliar o comportamento.
 
 
 ```
-// INSIRA SUA ANÁLISE OU PARECER ABAIXO
+Melhorias
 
+Configuração do Timeout no Bulkhead: Seria melhor definir um tempo máximo para a execução das requisições com o uso de um timeout, para evitar que a aplicação fique esperando indefinidamente.
 
+Tratamento de Erros Mais Robusto: O catch que você está usando poderia capturar erros mais específicos, para poder fornecer mensagens de erro mais detalhadas para diferentes tipos de falha (por exemplo, se exceder o limite de requisições).
+
+Definir um número de tentativas (retry): Quando usamos cockatiel, podemos configurar um número de tentativas em caso de falha. Isso poderia ser útil se a chamada à função externa falhar por algum motivo
 
 ```
 
