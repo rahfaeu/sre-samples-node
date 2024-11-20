@@ -4,11 +4,11 @@ const CircuitBreaker = require('opossum');
 const app = express();
 const port = 8080;
 
-// Função simulando chamada externa com 50% de falhas
+// Função simulando chamada externa com 50% de falhas (ajustado para uma taxa de 50% de falhas)
 async function externalService() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const shouldFail = Math.random() > 0.8;  // Simula o percentual de falhas (20% de sucesso)
+            const shouldFail = Math.random() > 0.5;  // 50% de chance de falha
             if (shouldFail) {
                 reject(new Error('Falha na chamada externa'));  // Simulando falha
             } else {
