@@ -3,14 +3,14 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-// Função para criar uma Promise que simula um timeout
-function timeoutPromise(ms, promise) {
+// Função para criar uma Promise com timeout
+function timeoutPromise(ms, promiseFn) {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(new Error('Tempo limite excedido!'));
         }, ms);
 
-        promise
+        promiseFn()
             .then((result) => {
                 clearTimeout(timeout);
                 resolve(result);
@@ -22,31 +22,40 @@ function timeoutPromise(ms, promise) {
     });
 }
 
-// Função simulando chamada externa
+// Função simulando uma chamada externa
 async function externalService() {
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve('Resposta da chamada externa');
-        }, 5000); 
+            resolve('Resposta da chamada externa\n');
+        }, 2000); // Ajustado para 2s
     });
 }
+
+// Rota inicial
+app.get('/', (req, res) => {
+    res.send('Bem-vindo ao servidor!');
+});
 
 // Rota de health check
 app.get('/api/health', (req, res) => {
     res.send('OK');
 });
 
-// Rota que faz a chamada simulada com timeout
+// Rota com timeout
 app.get('/api/timeout', async (req, res) => {
     try {
-        const result = await timeoutPromise(3000, externalService());
+        const result = await timeoutPromise(3000, externalService); // Timeout de 3s
         res.send(result);
     } catch (error) {
-        res.status(500).send(`Erro: ${error.message}`);
+        if (error.message.includes('Tempo limite excedido')) {
+            res.status(408).send(`Erro: ${error.message}`); // Timeout
+        } else {
+            res.status(500).send(`Erro: ${error.message}`); // Outros erros
+        }
     }
 });
 
-// Iniciando o servidor
+// Iniciar o servidor
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
