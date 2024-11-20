@@ -117,7 +117,7 @@ Ajustar configurações de timeout e corrigir erro de timeout execedido ao invoc
 ![Screen Shot 2024-09-13 at 21 42 04](https://github.com/user-attachments/assets/a451d1a1-ef3f-4116-8ab0-246d6548b7a3)
 
 ```
-Melhorias Possíveis
+Melhorias
 
 Execução antecipada da Promise
 A Promise está sendo executada antes da implementação da lógica de timeout. Quando chamamos timeoutPromise(3000, externalService()), a função externalService() é executada imediatamente, mesmo antes de aplicar a lógica do timeout. Isso acontece porque a função externalService() é avaliada logo no momento em que é passada para a função timeoutPromise, o que não é o comportamento esperado.
@@ -193,11 +193,21 @@ curl localhost:8080/api/ratelimit
 Alterar limite de requisições permitidas para 100 num intervalo de 1 minuto e escrever uma função para simular o erro de Rate Limit.
 ![Screen Shot 2024-09-13 at 22 51 23](https://github.com/user-attachments/assets/6407456d-9bb5-41bb-ba17-9cc4a5272d29)
 
-
 ```
-// INSIRA SUA ANÁLISE OU PARECER ABAIXO
+Melhorias
 
+Rate Limiter Configurado para Todas as Rotas
 
+O middleware de rate limiting (app.use(limiter)) está aplicado globalmente, afetando todas as rotas, incluindo aquelas que poderiam precisar de uma configuração diferente (por exemplo, /api/health).
+Mensagem de Erro Genérica no Rate Limiter
+
+A mensagem do rate limiter é genérica e pode não fornecer detalhes suficientes sobre a rota ou o contexto em que a limitação ocorreu.
+Falta de Logs para Monitoramento
+
+Não há logs para acompanhar o comportamento das requisições bloqueadas pelo rate limiter, dificultando a análise de possíveis abusos.
+Erro 500 Genérico na Rota /api/ratelimit
+
+O código trata qualquer erro no processamento da rota como 500, sem diferenciar erros internos de limites excedidos.
 
 ```
 
