@@ -357,10 +357,10 @@ Ajustar o o percentual de falhas para que o circuit breaker obtenha sucesso ao r
 Observar comportamento do circuito no console.
 
 ```
-// INSIRA SUA ANÁLISE OU PARECER ABAIXO
+Melhorias
+Melhorar a Resposta de Fallback: A resposta de fallback pode ser mais informativa, explicando que o sistema está em modo de emergência devido a falhas no serviço externo.
 
-
-
+Considerar a Persistência de Estados (opcional): Se a aplicação for escalada em múltiplas instâncias, pode ser interessante considerar a persistência do estado do Circuit Breaker em um banco de dados ou serviço de cache.
 ```
 
 ---
