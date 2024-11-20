@@ -117,12 +117,23 @@ Ajustar configurações de timeout e corrigir erro de timeout execedido ao invoc
 ![Screen Shot 2024-09-13 at 21 42 04](https://github.com/user-attachments/assets/a451d1a1-ef3f-4116-8ab0-246d6548b7a3)
 
 ```
-// INSIRA SUA ANÁLISE OU PARECER ABAIXO
+Melhorias Possíveis
+
+Execução antecipada da Promise
+A Promise está sendo executada antes da implementação da lógica de timeout. Quando chamamos timeoutPromise(3000, externalService()), a função externalService() é executada imediatamente, mesmo antes de aplicar a lógica do timeout. Isso acontece porque a função externalService() é avaliada logo no momento em que é passada para a função timeoutPromise, o que não é o comportamento esperado.
+
+Descompasso de tempo
+O tempo de timeout configurado (3000ms) é menor que o tempo que a função externalService() leva para executar (5000ms), fazendo com que o erro de timeout ocorra sempre. O tempo de execução da chamada simulada é maior do que o tempo disponível para resposta, o que resulta consistentemente em um erro de timeout.
+
+Tratamento genérico de erros
+Atualmente, todos os erros são tratados de forma genérica, retornando um código 500, sem diferenciação entre um erro de timeout e outros tipos de falha. Isso pode gerar confusão para o cliente, pois ele não sabe exatamente o que causou o erro. Melhor seria distinguir os erros, para que o cliente receba uma mensagem mais clara e específica sobre o que aconteceu.
 
 
 
 ```
+A seguir imagem após aplicação das melhorias:
 
+![Texto Alternativo](./img/desafio1-timeout.png)
 
 ---
 ### 2.2 Rate Limit
