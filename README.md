@@ -424,10 +424,13 @@ Em seguida, para entendimento detalhado, execute os comandos abaixo em ordem:
 curl http://localhost:8080/health/liveness
 ```
 
+
 **2. Liveness output**
 ```sh
 Liveness check passed
 ```
+### Execução
+![liveness](./img/desafio5-liveness.png)
 
 **3. Readiness**
 ```sh
@@ -439,10 +442,17 @@ curl http://localhost:8080/health/readiness
 Service is not ready yet
 ```
 
+### Execução
+![liveness](./img/desafio5-readiness.png)
+
 **5. Simulação de Readiness**
 ```sh
 curl http://localhost:8080/make-ready
 ```
+
+### Execução
+![liveness](./img/desafio5-make-ready.png)
+
 **6. Readiness**
 ```sh
 curl http://localhost:8080/health/readiness
@@ -450,6 +460,10 @@ curl http://localhost:8080/health/readiness
 **7. Readiness output**
 ```sh
 Readiness check passed
+```
+
+### Execução
+![liveness](./img/desafio5-health-readiness.png)
 ```
 #### 2.5.1 Exemplo de configuração de Probes no Kubernetes (Opcional)
 Para utilizar esses endpoints como probes no Kubernetes, você pode configurar o `deployment.yaml` da seguinte maneira:
