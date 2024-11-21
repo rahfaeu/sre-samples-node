@@ -1,43 +1,43 @@
 const express = require('express');
-const { bulkhead, retry } = require('cockatiel');
-
+const { bulkhead } = require('cockatiel');
 const app = express();
 const port = 8080;
 
-// Configurando bulkhead com cockatiel (Máximo de 2 requisições simultâneas) e definindo uma política de retry
-const bulkheadPolicy = bulkhead(5);  // Permitir até 5 requisições simultâneas
-const retryPolicy = retry({ maxAttempts: 3, delay: 1000 }); // Tentativas até 3 vezes com delay de 1 segundo
+// Configurando bulkhead com cockatiel (Máximo de 5 requisições simultâneas)
+const bulkheadPolicy = bulkhead(5);
 
 // Função simulando chamada externa
-async function externalService() {
-    return new Promise((resolve, reject) => {
+async function externalService(id) {
+    return new Promise((resolve) => {
         setTimeout(() => {
-            // Simulando um erro de rede com 20% de chance
-            const shouldFail = Math.random() < 0.2; 
-            if (shouldFail) {
-                reject(new Error('Erro de rede simulado'));
-            } else {
-                resolve('Resposta da chamada externa');
-            }
-        }, 2000); // Simula uma chamada que demora 2 segundos
+            resolve(`Resposta da chamada externa ${id}`);
+        }, 2000);  // Simula uma chamada que demora 2 segundos
     });
+}
+
+// Função para fazer várias chamadas simultâneas
+async function makeConcurrentRequests(numRequests) {
+    const requests = [];
+    
+    for (let i = 0; i < numRequests; i++) {
+        requests.push(bulkheadPolicy.execute(() => externalService(i + 1)));  // Passando o id da requisição
+    }
+    
+    const results = await Promise.all(requests);  // Espera todas as promessas serem resolvidas
+    results.forEach(result => {
+        console.log(result);  // Logando os resultados das chamadas
+    });
+    return results;
 }
 
 // Rota que faz a chamada simulada
 app.get('/api/bulkhead', async (req, res) => {
     try {
-        // Aplicando as políticas de bulkhead e retry
-        const result = await retryPolicy.execute(() => 
-            bulkheadPolicy.execute(() => externalService())
-        );
+        console.log('Iniciando chamadas simultâneas...');
+        const result = await makeConcurrentRequests(10);  // Inicia 10 chamadas simultâneas
         res.send(result);
     } catch (error) {
-        // Melhorando o tratamento de erros
-        if (error.message.includes('Erro de rede')) {
-            res.status(503).send('Serviço temporariamente indisponível, por favor tente novamente.');
-        } else {
-            res.status(500).send(`Erro inesperado: ${error.message}`);
-        }
+        res.status(500).send(`Erro: ${error.message}`);
     }
 });
 
